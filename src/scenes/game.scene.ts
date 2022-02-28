@@ -28,6 +28,18 @@ class Game extends Scene {
         this.player.body.setCollideWorldBounds(true);
     }
 
+    updatePlayerPosition() {
+        const cursors = this.input.keyboard.createCursorKeys();
+
+        if (cursors.down.isDown) {
+            this.player.body.setVelocityY(150);
+        } else if (cursors.up.isDown) {
+            this.player.body.setVelocityY(-150);
+        } else {
+            this.player.body.setVelocityY(0);
+        }
+    }
+
     createAiPaddle() {
         // create shape
         this.ai = this.add.rectangle(PLAYER_SIZE_WIDTH - 50, PLAYER_SIZE_HEIGHT / 2, 30, 100, 0xffffff, 1);
@@ -55,6 +67,10 @@ class Game extends Scene {
         const { x, y } = this.physics.velocityFromAngle(startingAngle, 200);
 
         this.ball.body.setVelocity(x, y);
+    }
+
+    update(): void {
+        this.updatePlayerPosition();
     }
 }
 
