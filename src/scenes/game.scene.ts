@@ -29,10 +29,16 @@ class Game extends Scene {
     }
 
     createAiPaddle() {
+        // create shape
         this.ai = this.add.rectangle(PLAYER_SIZE_WIDTH - 50, PLAYER_SIZE_HEIGHT / 2, 30, 100, 0xffffff, 1);
+
+        // add to world physics
         this.physics.add.existing(this.ai);
 
+        // make so the ball doesnt push the paddle
         this.ai.body.setImmovable(true);
+
+        // make sure paddle doesn't leave the world
         this.ai.body.setCollideWorldBounds(true);
     }
 
@@ -40,6 +46,10 @@ class Game extends Scene {
         this.createBall();
         this.createPlayerPaddle();
         this.createAiPaddle();
+
+        // Add collisions for all objects likely to touch
+        this.physics.add.collider(this.ball, this.player);
+        this.physics.add.collider(this.ball, this.ai);
 
         const startingAngle = PhaserMath.Between(0, 360);
         const { x, y } = this.physics.velocityFromAngle(startingAngle, 200);
