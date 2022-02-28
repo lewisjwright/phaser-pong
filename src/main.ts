@@ -6,6 +6,13 @@ const config: Phaser.Types.Core.GameConfig = {
     width: PLAYER_SIZE_WIDTH,
     height: PLAYER_SIZE_HEIGHT,
     type: Phaser.AUTO,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: true,
+        },
+    },
 };
 
 const game = new Phaser.Game(config);
