@@ -28,9 +28,18 @@ class Game extends Scene {
         this.player.body.setCollideWorldBounds(true);
     }
 
+    createAiPaddle() {
+        this.ai = this.add.rectangle(PLAYER_SIZE_WIDTH - 50, PLAYER_SIZE_HEIGHT / 2, 30, 100, 0xffffff, 1);
+        this.physics.add.existing(this.ai);
+
+        this.ai.body.setImmovable(true);
+        this.ai.body.setCollideWorldBounds(true);
+    }
+
     create(): void {
         this.createBall();
         this.createPlayerPaddle();
+        this.createAiPaddle();
 
         const startingAngle = PhaserMath.Between(0, 360);
         const { x, y } = this.physics.velocityFromAngle(startingAngle, 200);
