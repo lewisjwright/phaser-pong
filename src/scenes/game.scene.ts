@@ -11,7 +11,7 @@ class Game extends Scene {
         this.physics.add.existing(this.ball);
         this.ball.body.setBounce(1, 1);
 
-        this.ball.body.setCollideWorldBounds(true);
+        (this.ball.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
     }
 
     createPlayerPaddle() {
@@ -22,10 +22,10 @@ class Game extends Scene {
         this.physics.add.existing(this.player);
 
         // make so the ball doesnt push the paddle
-        this.player.body.setImmovable(true);
+        (this.player.body as Phaser.Physics.Arcade.Body).setImmovable(true);
 
         // make sure paddle doesn't leave the world
-        this.player.body.setCollideWorldBounds(true);
+        (this.player.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
     }
 
     updatePlayerPosition() {
@@ -48,32 +48,33 @@ class Game extends Scene {
         this.physics.add.existing(this.ai);
 
         // make so the ball doesnt push the paddle
-        this.ai.body.setImmovable(true);
+        (this.ai.body as Phaser.Physics.Arcade.Body).setImmovable(true);
 
         // make sure paddle doesn't leave the world
-        this.ai.body.setCollideWorldBounds(true);
+        (this.ai.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
     }
 
     updateAiPosition() {
         const ballPosition = this.ball.y;
         const aiPosition = this.ai.y;
         const positionComparison = ballPosition - aiPosition;
+        const aiSpeed = 100;
 
         // TODO: Implement difficulty selector maybe?
         // TODO: Consider making ai movement smoother
         if (positionComparison < 0) {
             // above
-            this.ai.body.setVelocityY(-100);
+            (this.ai.body as Phaser.Physics.Arcade.Body).setVelocityY(-aiSpeed);
 
             if (Math.abs(positionComparison) < 10) {
-                this.ai.body.setVelocityY(-10);
+                (this.ai.body as Phaser.Physics.Arcade.Body).setVelocityY(-(aiSpeed / 10));
             }
         } else if (positionComparison > 0) {
             // below
-            this.ai.body.setVelocityY(100);
+            (this.ai.body as Phaser.Physics.Arcade.Body).setVelocityY(aiSpeed);
 
             if (Math.abs(positionComparison) < 10) {
-                this.ai.body.setVelocityY(10);
+                (this.ai.body as Phaser.Physics.Arcade.Body).setVelocityY(aiSpeed / 10);
             }
         }
     }
@@ -90,7 +91,7 @@ class Game extends Scene {
         const startingAngle = PhaserMath.Between(0, 360);
         const { x, y } = this.physics.velocityFromAngle(startingAngle, 200);
 
-        this.ball.body.setVelocity(x, y);
+        (this.ball.body as Phaser.Physics.Arcade.Body).setVelocity(x, y);
     }
 
     update(): void {
