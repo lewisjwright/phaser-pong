@@ -5,6 +5,10 @@ class Game extends Scene {
     private ball!: any;
     private player!: any;
     private ai!: any;
+    private playerScore: number = 0;
+    private aiScore: number = 0;
+    private playerScoreDisplay!: Phaser.GameObjects.Text;
+    private aiScoreDisplay!: Phaser.GameObjects.Text;
 
     createBall() {
         this.ball = this.add.circle(PLAYER_SIZE_WIDTH / 2, PLAYER_SIZE_HEIGHT / 2, 10, 0xffffff, 1);
@@ -12,6 +16,16 @@ class Game extends Scene {
         this.ball.body.setBounce(1, 1);
 
         (this.ball.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
+
+        this.physics.world.setBoundsCollision(false, false, true, true);
+    }
+
+    resetBall() {
+        this.ball.setPosition(PLAYER_SIZE_WIDTH / 2, PLAYER_SIZE_HEIGHT / 2);
+        const startingAngle = PhaserMath.Between(0, 360);
+        const { x, y } = this.physics.velocityFromAngle(startingAngle, 200);
+
+        (this.ball.body as Phaser.Physics.Arcade.Body).setVelocity(x, y);
     }
 
     createPlayerPaddle() {
@@ -78,10 +92,23 @@ class Game extends Scene {
         }
     }
 
+    createScores() {
+        const playerScorePosition = PLAYER_SIZE_WIDTH / 4;
+        const aiScorePosition = parseInt((PLAYER_SIZE_WIDTH / 1.3333).toFixed());
+
+        const scoreStyle = {
+            fontSize: '40px',
+        };
+
+        this.playerScoreDisplay = this.add.text(playerScorePosition, 10, `${this.playerScore}`, scoreStyle);
+        this.aiScoreDisplay = this.add.text(aiScorePosition, 10, `${this.aiScore}`, scoreStyle);
+    }
+
     create(): void {
         this.createBall();
         this.createPlayerPaddle();
         this.createAiPaddle();
+        this.createScores();
 
         // Add collisions for all objects likely to touch
         this.physics.add.collider(this.ball, this.player);
@@ -96,6 +123,17 @@ class Game extends Scene {
     update(): void {
         this.updatePlayerPosition();
         this.updateAiPosition();
+
+        if (this.ball.x < 0) {
+            this.resetBall();
+
+            this.aiScore += 1;
+            this.aiScoreDisplay.setText(`${this.aiScore}`);
+        } else if (this.ball.x > PLAYER_SIZE_WIDTH) {
+            this.resetBall();
+            this.playerScore += 1;
+            this.playerScoreDisplay.setText(`${this.playerScore}`);
+        }
     }
 }
 
