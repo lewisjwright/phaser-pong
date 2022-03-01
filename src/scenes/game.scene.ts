@@ -1,5 +1,5 @@
 import { Scene, Math as PhaserMath } from 'phaser';
-import { PLAYER_SIZE_HEIGHT, PLAYER_SIZE_WIDTH } from '../consts';
+import { PLAYER_SIZE_HEIGHT, PLAYER_SIZE_WIDTH, SCENE_KEYS } from '../consts';
 
 class Game extends Scene {
     private ball!: any;
@@ -105,6 +105,9 @@ class Game extends Scene {
     }
 
     create(): void {
+        this.scene.run(SCENE_KEYS.BACKGROUND);
+        this.scene.sendToBack(SCENE_KEYS.BACKGROUND);
+
         this.createBall();
         this.createPlayerPaddle();
         this.createAiPaddle();

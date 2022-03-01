@@ -19,6 +19,7 @@ const game = new Phaser.Game(config);
 
 game.scene.add(SCENE_KEYS.TITLE, SCENES.TitleScreen);
 game.scene.add(SCENE_KEYS.GAME, SCENES.Game);
+game.scene.add(SCENE_KEYS.BACKGROUND, SCENES.GameBackground);
 
 // game.scene.start(SCENE_KEYS.TITLE);
 
