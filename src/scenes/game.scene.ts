@@ -61,7 +61,6 @@ class Game extends Scene {
         const aiSpeed = 100;
 
         // TODO: Implement difficulty selector maybe?
-        // TODO: Consider making ai movement smoother
         if (positionComparison < 0) {
             // above
             (this.ai.body as Phaser.Physics.Arcade.Body).setVelocityY(-aiSpeed);
