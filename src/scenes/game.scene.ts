@@ -175,7 +175,7 @@ class Game extends Scene {
     }
 
     checkForWinCondition() {
-        const winningScore = 1;
+        const winningScore = 5;
 
         if (this.playerScore === winningScore) {
             this.gameState = GameState.WIN;
