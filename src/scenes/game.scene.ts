@@ -13,7 +13,8 @@ class Game extends Scene {
     createBall() {
         this.ball = this.add.circle(PLAYER_SIZE_WIDTH / 2, PLAYER_SIZE_HEIGHT / 2, 10, 0xffffff, 1);
         this.physics.add.existing(this.ball);
-        this.ball.body.setBounce(1, 1);
+        (this.ball.body as Phaser.Physics.Arcade.Body).setCircle(10);
+        (this.ball.body as Phaser.Physics.Arcade.Body).setBounce(1, 1);
 
         (this.ball.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
 
@@ -97,11 +98,11 @@ class Game extends Scene {
         const aiScorePosition = parseInt((PLAYER_SIZE_WIDTH / 1.3333).toFixed());
 
         const scoreStyle = {
-            fontSize: '40px',
+            fontSize: '50px',
         };
 
-        this.playerScoreDisplay = this.add.text(playerScorePosition, 10, `${this.playerScore}`, scoreStyle);
-        this.aiScoreDisplay = this.add.text(aiScorePosition, 10, `${this.aiScore}`, scoreStyle);
+        this.playerScoreDisplay = this.add.text(playerScorePosition, 20, `${this.playerScore}`, scoreStyle);
+        this.aiScoreDisplay = this.add.text(aiScorePosition, 20, `${this.aiScore}`, scoreStyle);
     }
 
     create(): void {
@@ -117,16 +118,12 @@ class Game extends Scene {
         this.physics.add.collider(this.ball, this.player);
         this.physics.add.collider(this.ball, this.ai);
 
-        const startingAngle = PhaserMath.Between(0, 360);
-        const { x, y } = this.physics.velocityFromAngle(startingAngle, 200);
-
-        (this.ball.body as Phaser.Physics.Arcade.Body).setVelocity(x, y);
+        this.time.delayedCall(500, () => {
+            this.resetBall();
+        });
     }
 
-    update(): void {
-        this.updatePlayerPosition();
-        this.updateAiPosition();
-
+    monitorScore() {
         if (this.ball.x < 0) {
             this.resetBall();
 
@@ -137,6 +134,12 @@ class Game extends Scene {
             this.playerScore += 1;
             this.playerScoreDisplay.setText(`${this.playerScore}`);
         }
+    }
+
+    update(): void {
+        this.updatePlayerPosition();
+        this.updateAiPosition();
+        this.monitorScore();
     }
 }
 
