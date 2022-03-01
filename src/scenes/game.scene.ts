@@ -54,6 +54,30 @@ class Game extends Scene {
         this.ai.body.setCollideWorldBounds(true);
     }
 
+    updateAiPosition() {
+        const ballPosition = this.ball.y;
+        const aiPosition = this.ai.y;
+        const positionComparison = ballPosition - aiPosition;
+
+        // TODO: Implement difficulty selector maybe?
+        // TODO: Consider making ai movement smoother
+        if (positionComparison < 0) {
+            // above
+            this.ai.body.setVelocityY(-100);
+
+            if (Math.abs(positionComparison) < 10) {
+                this.ai.body.setVelocityY(-10);
+            }
+        } else if (positionComparison > 0) {
+            // below
+            this.ai.body.setVelocityY(100);
+
+            if (Math.abs(positionComparison) < 10) {
+                this.ai.body.setVelocityY(10);
+            }
+        }
+    }
+
     create(): void {
         this.createBall();
         this.createPlayerPaddle();
@@ -71,6 +95,7 @@ class Game extends Scene {
 
     update(): void {
         this.updatePlayerPosition();
+        this.updateAiPosition();
     }
 }
 
