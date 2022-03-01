@@ -2,6 +2,8 @@ const SCENE_KEYS = {
     TITLE: 'title-screen',
     GAME: 'game',
     BACKGROUND: 'game-background',
+    WIN: 'win-screen',
+    LOSE: 'lose-screen',
 };
 
 const PLAYER_SIZE_WIDTH: number = 800;

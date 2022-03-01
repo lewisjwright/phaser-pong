@@ -1,5 +1,6 @@
 import { Scene, Math as PhaserMath } from 'phaser';
 import { PLAYER_SIZE_HEIGHT, PLAYER_SIZE_WIDTH, SCENE_KEYS } from '../consts';
+import { GameState } from '../state-machines';
 
 class Game extends Scene {
     private ball!: any;
@@ -9,6 +10,17 @@ class Game extends Scene {
     private aiScore: number = 0;
     private playerScoreDisplay!: Phaser.GameObjects.Text;
     private aiScoreDisplay!: Phaser.GameObjects.Text;
+    private gameState!: string;
+
+    init() {
+        this.resetGame();
+        this.gameState = GameState.RUNNING;
+    }
+
+    resetGame() {
+        this.playerScore = 0;
+        this.aiScore = 0;
+    }
 
     createBall() {
         this.ball = this.add.circle(PLAYER_SIZE_WIDTH / 2, PLAYER_SIZE_HEIGHT / 2, 10, 0xffffff, 1);
@@ -131,15 +143,46 @@ class Game extends Scene {
             this.aiScoreDisplay.setText(`${this.aiScore}`);
         } else if (this.ball.x > PLAYER_SIZE_WIDTH) {
             this.resetBall();
+
             this.playerScore += 1;
             this.playerScoreDisplay.setText(`${this.playerScore}`);
         }
     }
 
+    stopBall() {
+        this.ball.active = false;
+        this.physics.world.remove(this.ball.body);
+    }
+
+    checkForWinCondition() {
+        const winningScore = 3;
+
+        if (this.playerScore === winningScore) {
+            this.gameState = GameState.WIN;
+            this.scene.stop(SCENE_KEYS.BACKGROUND);
+            this.scene.start(SCENE_KEYS.WIN);
+
+            this.stopBall();
+        }
+
+        if (this.aiScore === winningScore) {
+            this.gameState = GameState.LOSE;
+            this.scene.stop(SCENE_KEYS.BACKGROUND);
+            this.scene.start(SCENE_KEYS.LOSE);
+
+            this.stopBall();
+        }
+    }
+
     update(): void {
+        if (this.gameState !== GameState.RUNNING) {
+            return;
+        }
+
         this.updatePlayerPosition();
         this.updateAiPosition();
         this.monitorScore();
+        this.checkForWinCondition();
     }
 }
 
