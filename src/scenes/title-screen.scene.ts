@@ -1,7 +1,7 @@
-import Phaser from 'phaser';
+import { Scene } from 'phaser';
 import { PLAYER_SIZE_HEIGHT, PLAYER_SIZE_WIDTH } from '../consts';
 
-class TitleScreen extends Phaser.Scene {
+class TitleScreen extends Scene {
     create() {
         const startText = this.add.text(PLAYER_SIZE_WIDTH / 2, PLAYER_SIZE_HEIGHT / 2, 'Welcome to Phaser Pong', {
             fontSize: '16px',

@@ -2,13 +2,13 @@
   "root": true,
   "extends": ["airbnb", "plugin:prettier/recommended", "plugin:json/recommended"],
   "settings": {
-    "import/extensions": [".js", ".jsx"],
+    "import/extensions": [".js"],
     "import/parsers": {
-      "@typescript-eslint/parser": [".js", ".jsx"]
+      "@typescript-eslint/parser": [".js"]
     },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx"]
+        "extensions": [".js"]
       }
     }
   },
@@ -18,19 +18,10 @@
       "ignorePackages",
       {
         "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
+        "ts": "never"
       }
     ],
-    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
     "max-len": [2, 120, 4, { "ignoreUrls": true }],
-    "react/jsx-indent": ["error", 4],
-    "react/no-danger": "off",
-    "react/require-default-props": "off",
-    "react/jsx-indent-props": ["error", 4],
-    "react/jsx-wrap-multilines": "off",
-    "react/jsx-one-expression-per-line": "off",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": "off",
     "indent": "off"
@@ -64,9 +55,7 @@
           "ignorePackages",
           {
             "js": "never",
-            "jsx": "never",
-            "ts": "never",
-            "tsx": "never"
+            "ts": "never"
           }
         ],
         "indent": "off",
@@ -76,15 +65,7 @@
         "no-shadow": "off",
         "no-console": ["error", { "allow": ["warn", "error"] }],
         "import/no-cycle": "off",
-        "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
         "max-len": [2, 120, 4, { "ignoreUrls": true, "ignorePattern": "d=\"([\\s\\S]*?)\"" }],
-        "react/jsx-indent": ["error", 4],
-        "react/no-danger": "off",
-        "react/require-default-props": "off",
-        "react/jsx-indent-props": ["error", 4],
-        "react/jsx-wrap-multilines": "off",
-        "react/jsx-props-no-spreading": "off",
-        "react/jsx-one-expression-per-line": "off",
         "import/prefer-default-export": "off",
         "import/no-extraneous-dependencies": "off",
         "@typescript-eslint/lines-between-class-members": "off",
@@ -101,9 +82,6 @@
         "@typescript-eslint/no-unused-expressions": "error"
       },
       "parserOptions": {
-        "ecmaFeatures": {
-          "jsx": true
-        },
         "ecmaVersion": 2018,
         "sourceType": "module",
         "project": "./tsconfig.json"
@@ -111,10 +89,6 @@
     }
   ],
   "env": {
-    "browser": true,
-    "jest": true
-  },
-  "globals": {
-    "JSX": true
+    "browser": true
   }
 }
