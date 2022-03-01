@@ -10,7 +10,6 @@ const config: Phaser.Types.Core.GameConfig = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true,
         },
     },
 };
@@ -20,8 +19,7 @@ const game = new Phaser.Game(config);
 game.scene.add(SCENE_KEYS.TITLE, SCENES.TitleScreen);
 game.scene.add(SCENE_KEYS.GAME, SCENES.Game);
 game.scene.add(SCENE_KEYS.BACKGROUND, SCENES.GameBackground);
+game.scene.add(SCENE_KEYS.WIN, SCENES.WinScreen);
+game.scene.add(SCENE_KEYS.LOSE, SCENES.LoseScreen);
 
-// game.scene.start(SCENE_KEYS.TITLE);
-
-// TEMP: Show game during dev
-game.scene.start(SCENE_KEYS.GAME);
+game.scene.start(SCENE_KEYS.TITLE);
