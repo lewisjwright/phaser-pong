@@ -1,5 +1,5 @@
 import { Scene, Math as PhaserMath } from 'phaser';
-import { PLAYER_SIZE_HEIGHT, PLAYER_SIZE_WIDTH, SCENE_KEYS } from '../consts';
+import { AUDIO_KEYS, PLAYER_SIZE_HEIGHT, PLAYER_SIZE_WIDTH, SCENE_KEYS } from '../consts';
 import { GameState } from '../state-machines';
 
 class Game extends Scene {
@@ -17,6 +17,12 @@ class Game extends Scene {
         this.gameState = GameState.RUNNING;
     }
 
+    preload() {
+        this.load.audio(AUDIO_KEYS.BEEP, '/sounds/ping_pong_8bit_beeep.ogg');
+        this.load.audio(AUDIO_KEYS.PEEP, '/sounds/ping_pong_8bit_peeeeeep.ogg');
+        this.load.audio(AUDIO_KEYS.PLOP, '/sounds/ping_pong_8bit_plop.ogg');
+    }
+
     resetGame() {
         this.playerScore = 0;
         this.aiScore = 0;
@@ -31,6 +37,7 @@ class Game extends Scene {
         (this.ball.body as Phaser.Physics.Arcade.Body).setCollideWorldBounds(true);
 
         this.physics.world.setBoundsCollision(false, false, true, true);
+        (this.ball.body as Phaser.Physics.Arcade.Body).onWorldBounds = true;
     }
 
     resetBall() {
@@ -127,8 +134,21 @@ class Game extends Scene {
         this.createScores();
 
         // Add collisions for all objects likely to touch
-        this.physics.add.collider(this.ball, this.player);
-        this.physics.add.collider(this.ball, this.ai);
+        this.physics.add.collider(this.ball, this.player, () => {
+            this.sound.play(AUDIO_KEYS.BEEP);
+        });
+
+        this.physics.add.collider(this.ball, this.ai, () => {
+            this.sound.play(AUDIO_KEYS.BEEP);
+        });
+
+        this.physics.world.on('worldbounds', (_1: void, _2: void, _3: void, left: boolean, right: boolean) => {
+            if (left || right) {
+                return;
+            }
+
+            this.sound.play(AUDIO_KEYS.PLOP);
+        });
 
         this.time.delayedCall(500, () => {
             this.resetBall();
@@ -155,7 +175,7 @@ class Game extends Scene {
     }
 
     checkForWinCondition() {
-        const winningScore = 3;
+        const winningScore = 1;
 
         if (this.playerScore === winningScore) {
             this.gameState = GameState.WIN;
@@ -163,6 +183,7 @@ class Game extends Scene {
             this.scene.start(SCENE_KEYS.WIN);
 
             this.stopBall();
+            this.sound.play(AUDIO_KEYS.PEEP);
         }
 
         if (this.aiScore === winningScore) {
@@ -171,6 +192,7 @@ class Game extends Scene {
             this.scene.start(SCENE_KEYS.LOSE);
 
             this.stopBall();
+            this.sound.play(AUDIO_KEYS.PEEP);
         }
     }
 
