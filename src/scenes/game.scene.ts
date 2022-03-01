@@ -161,11 +161,13 @@ class Game extends Scene {
 
             this.aiScore += 1;
             this.aiScoreDisplay.setText(`${this.aiScore}`);
+            this.sound.play(AUDIO_KEYS.BEEP);
         } else if (this.ball.x > PLAYER_SIZE_WIDTH) {
             this.resetBall();
 
             this.playerScore += 1;
             this.playerScoreDisplay.setText(`${this.playerScore}`);
+            this.sound.play(AUDIO_KEYS.BEEP);
         }
     }
 
